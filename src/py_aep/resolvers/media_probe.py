@@ -3483,6 +3483,15 @@ def _probe_mxf(fp: IO[bytes]) -> MediaInfo:
         field_order=field_order,
     )
 
+def _probe_3gp(fp: IO[bytes]) -> MediaInfo:
+    """Probe a 3GPP media file.
+
+    Uses the ISO BMFF atom structure shared with QuickTime files.
+    3GPP codec support is determined by the existing sample-entry parser
+    and verified After Effects import behavior.
+    """
+    return _probe_mov(fp)
+
 _PARSERS: dict[str, Callable[[IO[bytes]], MediaInfo]] = {
     ".png": _probe_png,
     ".mov": _probe_mov,
@@ -3523,4 +3532,5 @@ _PARSERS: dict[str, Callable[[IO[bytes]], MediaInfo]] = {
     ".heic": _probe_heif,
     ".heif": _probe_heif,
     ".mxf": _probe_mxf,
+    ".3gp": _probe_3gp,
 }
